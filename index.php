@@ -19,11 +19,11 @@ class B
     public $name = 'Je suis la classe B';
 }
 
-$comment_string = (new ReflectionClass('Example'))->getMethod('__construct')->getDocComment();
+$annotations = (new ReflectionClass('Example'))->getMethod('__construct')->getDocComment();
 
 $pattern = "#@inject+\s*\(([a-zA-Z0-9, ()_].*)\)#";
 
-preg_match($pattern, $comment_string, $matches);
+preg_match($pattern, $annotations, $matches);
 
 $arguments = explode(',', $matches[1]);
 
