@@ -36,5 +36,5 @@ foreach ($arguments as $arg) {
 
 $class = "Example";
 $annotations = new $class(...$args);
-var_dump($annotations->b->name);
-var_dump($annotations->param);
+var_dump($annotations->b->name); // Je suis la classe B
+var_dump($annotations->param); // je suis un paramètre
