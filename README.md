@@ -25,3 +25,14 @@ class B
     public $name = 'Je suis la classe B';
 }
 ```
+
+Résolution
+
+```php
+<?php
+$annotations = new Annotations(Example::class);
+$resolve = $annotations->resolve();
+
+var_dump($resolve->b->name); // Je suis la classe B
+var_dump($resolve->param); // je suis un paramètre
+```

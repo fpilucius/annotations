@@ -1,4 +1,6 @@
 <?php
+require 'Annotations.php';
+
 class Example
 {
 
@@ -20,20 +22,8 @@ class B
     public $name = 'Je suis la classe B';
 }
 
-$annotations = (new ReflectionClass('Example'))->getMethod('__construct')->getDocComment();
+$annotations = new Annotations(Example::class);
+$resolve = $annotations->resolve();
 
-$pattern = "#@inject+\s*\(([a-zA-Z0-9, ()_].*)\)#";
-
-preg_match($pattern, $annotations, $matches);
-
-$arguments = explode(',', $matches[1]);
-
-foreach ($arguments as $arg) {
-    $argument = trim($arg);
-    $args[] = class_exists($argument) ? new $argument() : $argument;
-}
-
-$class = "Example";
-$annotations = new $class(...$args);
-var_dump($annotations->b->name); // Je suis la classe B
-var_dump($annotations->param); // je suis un paramètre
+var_dump($resolve->b->name); // Je suis la classe B
+var_dump($resolve->param); // je suis un paramètre
