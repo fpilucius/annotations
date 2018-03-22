@@ -4,6 +4,7 @@ class Example
 
     public $b;
     public $param;
+    public $c;
     /**
      * @inject (B, je suis un paramètre)
      */
