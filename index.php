@@ -21,10 +21,8 @@ class B
 
 $comment_string = (new ReflectionClass('Example'))->getMethod('__construct')->getDocComment();
 
-//define the regular expression pattern to use for string matching
 $pattern = "#@inject+\s*\(([a-zA-Z0-9, ()_].*)\)#";
 
-//perform the regular expression on the string provided
 preg_match($pattern, $comment_string, $matches);
 
 $arguments = explode(',', $matches[1]);
