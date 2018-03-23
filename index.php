@@ -40,8 +40,7 @@ class c
     public $name = 'Je suis la classe C';
 }
 
-$annotations = new Annotations(Example::class, ['setB','setC']);
-$resolve = $annotations->resolve();
+$resolve = (new Annotations(Example::class, ['setB','setC']))->resolve();
 
 var_dump($resolve->b->name); // Je suis la classe B
 var_dump($resolve->c->name); // Je suis la classe C
