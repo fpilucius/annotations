@@ -8,12 +8,18 @@ class Example
     public $param;
     public $c;
     /**
-     * @inject (B, je suis un paramètre)
+     * @inject (je suis un paramètre)
      */
-    public function __construct (B $b, $param) 
+    public function __construct ($param) 
+    {
+        $this->param = $param;
+    }
+    /**
+     * @inject (B)
+     */
+    public function setB(B $b)
     {
         $this->b = $b;
-        $this->param = $param;
     }
 }
 
@@ -22,7 +28,7 @@ class B
     public $name = 'Je suis la classe B';
 }
 
-$annotations = new Annotations(Example::class);
+$annotations = new Annotations(Example::class, ['setB']);
 $resolve = $annotations->resolve();
 
 var_dump($resolve->b->name); // Je suis la classe B

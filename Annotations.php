@@ -2,35 +2,62 @@
 
 class Annotations
 {
+    private $pattern = "#@inject+\s*\(([a-zA-Z0-9, ()_].*)\)#";
     private $class;
-
     private $className;
+    private $methods;
 
-    public function __construct($class)
+    public function __construct($class, $methods = null)
     {
+        $this->methods = $methods;
         $this->className = $class;
         $this->class = new ReflectionClass($class);
     }
 
     private function resolveConstructor() 
     {
-        $annotations = $this->class->getMethod('__construct')->getDocComment();
+        $constructor = $this->class->getConstructor();
+        if (!is_null($constructor) && !empty($constructor->getParameters())) {
+            $arguments = $this->extractParameters('__construct');
+            return new $this->className(...$this->resolveParameters($arguments));
+        } else {
+            return new $this->className();
+        }
+    }
 
-        $pattern = "#@inject+\s*\(([a-zA-Z0-9, ()_].*)\)#";
+    private function resolveMethods()
+    {
+        $instance = $this->resolveConstructor();
+            foreach ($this->methods as $method) {
+                $arguments = $this->extractParameters($method);
+                $instance->$method(...$this->resolveParameters($arguments));
+            }
+        return $instance;
+    }
 
-        preg_match($pattern, $annotations, $matches);
+    private function extractParameters($method)
+    {
+        $annotations = $this->class->getMethod($method)->getDocComment();
+        preg_match($this->pattern, $annotations, $matches);
+        return $arguments = explode(',', $matches[1]);
+    }
 
-        $arguments = explode(',', $matches[1]);
-
+    private function resolveParameters($arguments)
+    {
         foreach ($arguments as $arg) {
             $argument = trim($arg);
             $args[] = class_exists($argument) ? new $argument() : $argument;
         }
-        return new $this->className(...$args);
+        return $args;
     }
 
     public function resolve()
     {
-        return $this->resolveConstructor();
+        if ($this->methods == null) {
+            return $this->resolveConstructor();
+        } else {
+            return $this->resolveMethods();
+        }
+        
     }
 }
