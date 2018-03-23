@@ -36,7 +36,7 @@ class Annotations
      * @param string $class le nom de la classe
      * @param array $methods liste des méthodes
      */
-    public function __construct($class, $methods = null)
+    public function __construct($class, $methods = null) 
     {
         $this->methods = $methods;
         $this->className = $class;
