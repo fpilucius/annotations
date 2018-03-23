@@ -21,6 +21,13 @@ class Example
     {
         $this->b = $b;
     }
+    /**
+     * @inject (C)
+     */
+    public function setC(C $c)
+    {
+        $this->c = $c;
+    }
 }
 
 class B 
@@ -28,8 +35,14 @@ class B
     public $name = 'Je suis la classe B';
 }
 
-$annotations = new Annotations(Example::class, ['setB']);
+class c 
+{
+    public $name = 'Je suis la classe C';
+}
+
+$annotations = new Annotations(Example::class, ['setB','setC']);
 $resolve = $annotations->resolve();
 
 var_dump($resolve->b->name); // Je suis la classe B
+var_dump($resolve->c->name); // Je suis la classe C
 var_dump($resolve->param); // je suis un paramètre
