@@ -11,7 +11,7 @@ class Annotations
      *
      * @var string
      */
-    private $pattern = "#@inject+\s*\(([a-zA-Z0-9,_\-].*)\)#";
+    private $pattern = "#@inject\s*\(([a-zA-Z0-9,_\-].*)\)#";
     /**
      * instance de Reflection class
      *
