@@ -11,7 +11,7 @@ class Annotations
      *
      * @var string
      */
-    private $pattern = "#@inject\s*\(([a-zA-Z0-9,_\-].*)\)#";
+    private $pattern = "#(@inject)\s*\(([a-zA-Z0-9].*?)\)#";
     /**
      * instance de Reflection class
      *
@@ -81,7 +81,7 @@ class Annotations
     {
         $annotations = $this->reflection->getMethod($method)->getDocComment();
         preg_match($this->pattern, $annotations, $matches);
-        return $arguments = explode(',', $matches[1]);
+        return $arguments = explode(',', $matches[2]);
     }
     /**
      * Résolution des dépendances
